@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio | Portal Web</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { 
+      transition: background-color 0.35s ease, color 0.25s ease; 
+      overflow-x: hidden; 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .inicio-card {
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    body.modo-pc-activo .inicio-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 32px -12px rgba(0, 0, 0, 0.45);
+    }
+
+    body.modo-pc-activo .inicio-card:hover .icon-box {
+      transform: scale(1.08);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .icon-box {
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body.modo-pc-activo button:hover, 
+    body.modo-pc-activo a.btn-anim:hover {
+      transform: scale(1.015);
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease;
+    }
+
+    body.modo-pc-activo button:active, 
+    body.modo-pc-activo a.btn-anim:active {
+      transform: scale(0.98) !important;
+      transition: transform 0.07s ease;
+    }
+  </style>
+</head>
+<body id="cuerpo-principal" class="modo-pc-activo min-h-screen flex flex-col md:flex-row antialiased">
+
+  <!-- FONDO OSCURO MÓVIL -->
+  <div id="mobile-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-40 hidden md:hidden"></div>
+
+  <!-- PANEL LATERAL -->
+  <aside id="sidebar-panel" class="fixed inset-y-0 left-0 w-72 sm:w-80 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen flex flex-col justify-between p-5 sm:p-6 border-r transition-transform duration-200 ease-out z-50 overflow-y-auto">
+    <div class="space-y-6">
+      <div class="flex items-center justify-between pb-4 border-b border-current/15">
+        <a href="./" class="flex items-center gap-3">
+          <div id="logo-header-box" class="w-11 h-11 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm overflow-hidden p-1">
+            <img src="https://play-lh.googleusercontent.com/Vt3x_xEWabXw14MyYKfeFGazAxLFKg4Q-rAowh_ZYAI3-kcX7qkots-9opxGglSJ3vIbG9iBF2vppWjihACH" alt="Logo" class="w-full h-full object-cover rounded-xl" />
+          </div>
+          <div>
+            <h1 class="text-base font-extrabold tracking-tight leading-tight">INICIO</h1>
+            <p class="text-[10px] font-semibold tracking-wider uppercase opacity-70">Portal Principal</p>
+          </div>
+        </a>
+        <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-xl bg-zinc-800 text-white text-sm font-bold">✕</button>
+      </div>
+
+      <!-- INTERRUPTOR DE MODO PC / MÓVIL -->
+      <div id="caja-rendimiento" class="p-3.5 rounded-2xl border space-y-2.5">
+        <span class="text-[10px] font-bold uppercase tracking-wider opacity-70 block">Rendimiento Visual</span>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-modo-pc" onclick="cambiarModoRendimiento('pc')" class="py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+            💻 Modo PC
+          </button>
+          <button id="btn-modo-movil" onclick="cambiarModoRendimiento('movil')" class="py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+            📱 Modo Móvil
+          </button>
+        </div>
+      </div>
+
+      <!-- SELECTOR DE TEMA: BLANCO Y NEGRO -->
+      <div class="space-y-2.5">
+        <p class="text-[10px] font-bold uppercase tracking-wider opacity-70">Apariencia</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-tema-blanco" onclick="cambiarTema('blanco', true)" class="p-3 rounded-xl text-xs font-bold text-center transition">
+            ⬜ Blanco
+          </button>
+          <button id="btn-tema-negro" onclick="cambiarTema('negro', true)" class="p-3 rounded-xl text-xs font-bold text-center transition">
+            ⬛ Negro
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-4 mt-6 border-t border-current/15 text-[11px] opacity-70 flex items-center justify-between">
+      <span id="texto-estado-modo">Modo PC (Animaciones ON)</span>
+      <span id="texto-tema-activo" class="font-semibold">Negro</span>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="flex-1 flex flex-col min-h-screen w-full">
+    
+    <header id="barra-superior" class="py-3.5 px-4 sm:px-8 sticky top-0 z-30 border-b flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <button id="btn-menu-movil" onclick="toggleSidebar()" aria-label="Abrir menú" class="md:hidden px-3 py-2 rounded-xl border text-xs font-bold">
+          ☰ Menú
+        </button>
+        <span id="banner-badge" class="text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider">
+          Inicio
+        </span>
+      </div>
+
+      <span class="text-xs font-medium opacity-70 hidden sm:block">
+        Selecciona a dónde quieres ir
+      </span>
+    </header>
+
+    <main class="max-w-3xl w-full mx-auto px-4 sm:px-8 py-8 sm:py-10 flex-1 flex flex-col justify-center gap-6">
+
+      <!-- DESCRIPCIÓN DE 100 PALABRAS ARRIBA DEL TODO -->
+      <div class="space-y-2 pb-4 border-b border-current/15">
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Bienvenido</h2>
+        <p class="text-xs sm:text-sm leading-relaxed opacity-75">
+          Bienvenido a la página principal del sitio. Este espacio reúne en un solo lugar los accesos más importantes para que navegues rápido y sin complicaciones desde cualquier dispositivo. Aquí puedes entrar directamente a NovaPlay para disfrutar un montón de juegos y herramientas web desde el navegador, conectarte a nuestro servidor de Minecraft, visitar los perfiles para mantenerte al día con novedades y avisos, o unirte a nuestro servidor de ClassiCube para jugar y compartir en comunidad. Elige el tema en blanco o negro y ajusta el rendimiento según uses computadora o teléfono para tener la mejor experiencia posible.
+        </p>
+      </div>
+
+      <!-- LISTA VERTICAL DE BOTONES PRINCIPALES -->
+      <section id="botones-principales" class="grid grid-cols-1 gap-4">
+
+        <!-- 1. NOVAPLAY -->
+        <a href="./NovaPlay/" class="btn-anim inicio-card boton-portal rounded-3xl p-5 sm:p-6 border flex items-center justify-between gap-4 transition">
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="icon-box icono-portal w-14 h-14 rounded-2xl border flex items-center justify-center overflow-hidden p-1.5 shrink-0">
+              <img src="https://play-lh.googleusercontent.com/Vt3x_xEWabXw14MyYKfeFGazAxLFKg4Q-rAowh_ZYAI3-kcX7qkots-9opxGglSJ3vIbG9iBF2vppWjihACH" alt="NovaPlay" class="w-full h-full object-cover rounded-xl" />
+            </div>
+            <div class="min-w-0">
+              <span class="titulo-portal block text-base sm:text-lg font-extrabold tracking-tight truncate">
+                NovaPlay
+              </span>
+              <span class="sub-portal block text-xs leading-snug mt-0.5">
+                Juega un montón de juegos desde el navegador
+              </span>
+            </div>
+          </div>
+          <span class="flecha-portal text-lg font-extrabold shrink-0">→</span>
+        </a>
+
+        <!-- 2. MINECRAFT SERVER -->
+        <a href="./Minecraft/" class="btn-anim inicio-card boton-portal rounded-3xl p-5 sm:p-6 border flex items-center justify-between gap-4 transition">
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="icon-box icono-portal w-14 h-14 rounded-2xl border flex items-center justify-center overflow-hidden p-1.5 shrink-0">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRIZ--gcmxq1Kecc1e-p5A5WcWAn3j0uOSzZX38gzMlw&s=10.png" alt="MineCraft Server" class="w-full h-full object-cover rounded-xl" />
+            </div>
+            <div class="min-w-0">
+              <span class="titulo-portal block text-base sm:text-lg font-extrabold tracking-tight truncate">
+                MineCraft Server
+              </span>
+              <span class="sub-portal block text-xs leading-snug mt-0.5">
+                Entra a nuestro server de Minecraft
+              </span>
+            </div>
+          </div>
+          <span class="flecha-portal text-lg font-extrabold shrink-0">→</span>
+        </a>
+
+        <!-- 3. PERFILES -->
+        <a href="./Perfiles/" class="btn-anim inicio-card boton-portal rounded-3xl p-5 sm:p-6 border flex items-center justify-between gap-4 transition">
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="icon-box icono-portal w-14 h-14 rounded-2xl border flex items-center justify-center overflow-hidden p-1.5 shrink-0">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjVbpMLrxokI1h8S1JUfs3IRxk1nWJu_rhUzZLuF-oHQ&s=10.png" alt="Perfiles" class="w-full h-full object-cover rounded-xl" />
+            </div>
+            <div class="min-w-0">
+              <span class="titulo-portal block text-base sm:text-lg font-extrabold tracking-tight truncate">
+                Perfiles
+              </span>
+              <span class="sub-portal block text-xs leading-snug mt-0.5">
+                Sígueme en mis perfiles y comunidad
+              </span>
+            </div>
+          </div>
+          <span class="flecha-portal text-lg font-extrabold shrink-0">→</span>
+        </a>
+
+        <!-- 4. CLASSICUBE SERVER -->
+        <a href="./ClassiCube/" class="btn-anim inicio-card boton-portal rounded-3xl p-5 sm:p-6 border flex items-center justify-between gap-4 transition">
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="icon-box icono-portal w-14 h-14 rounded-2xl border flex items-center justify-center overflow-hidden p-1.5 shrink-0">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUMxUFhcMv09HD2LDzZlHiFLAG-eY4U8UgVu1Pm1iVKg&s=10" alt="ClassiCube Server" class="w-full h-full object-cover rounded-xl" />
+            </div>
+            <div class="min-w-0">
+              <span class="titulo-portal block text-base sm:text-lg font-extrabold tracking-tight truncate">
+                ClassiCube Server
+              </span>
+              <span class="sub-portal block text-xs leading-snug mt-0.5">
+                Entra a nuestro server de ClassiCube
+              </span>
+            </div>
+          </div>
+          <span class="flecha-portal text-lg font-extrabold shrink-0">→</span>
+        </a>
+
+      </section>
+
+    </main>
+
+    <footer id="footer-principal" class="py-5 px-4 sm:px-8 text-xs border-t mt-auto">
+      <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left opacity-75">
+        <p class="font-semibold">Portal Principal</p>
+        <p>NovaPlay • MineCraft • Perfiles • ClassiCube</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    let temaActual = 'negro';
+
+    function cambiarModoRendimiento(modo) {
+      const cuerpo = document.getElementById('cuerpo-principal');
+      const btnPc = document.getElementById('btn-modo-pc');
+      const btnMovil = document.getElementById('btn-modo-movil');
+      const textoEstado = document.getElementById('texto-estado-modo');
+      const esBlanco = temaActual === 'blanco';
+
+      const activoClass = esBlanco
+        ? "py-2 px-3 rounded-xl text-xs font-bold bg-zinc-950 text-white shadow-sm transition"
+        : "py-2 px-3 rounded-xl text-xs font-bold bg-white text-zinc-950 shadow-sm transition";
+      const inactivoClass = esBlanco
+        ? "py-2 px-3 rounded-xl text-xs font-semibold bg-zinc-100 text-zinc-700 border border-zinc-300 transition"
+        : "py-2 px-3 rounded-xl text-xs font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 transition";
+
+      if (modo === 'pc') {
+        cuerpo.classList.add('modo-pc-activo');
+        btnPc.className = activoClass;
+        btnMovil.className = inactivoClass;
+        textoEstado.textContent = "Modo PC (Animaciones ON)";
+        localStorage.setItem('novaplay_modo_rendimiento', 'pc');
+      } else {
+        cuerpo.classList.remove('modo-pc-activo');
+        btnMovil.className = activoClass;
+        btnPc.className = inactivoClass;
+        textoEstado.textContent = "Modo Móvil (Animaciones OFF)";
+        localStorage.setItem('novaplay_modo_rendimiento', 'movil');
+      }
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar-panel');
+      const overlay = document.getElementById('mobile-overlay');
+      const cerrado = sidebar.classList.contains('-translate-x-full');
+      if (cerrado) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function cerrarSidebarMobile() {
+      if (window.innerWidth < 768) {
+        document.getElementById('sidebar-panel').classList.add('-translate-x-full');
+        document.getElementById('mobile-overlay').classList.add('hidden');
+      }
+    }
+
+    function cambiarTema(clave, cerrarMenu = false) {
+      temaActual = clave === 'blanco' ? 'blanco' : 'negro';
+      localStorage.setItem('novaplay_tema_bn', temaActual);
+
+      const esBlanco = temaActual === 'blanco';
+      const textoTemaActivo = document.getElementById('texto-tema-activo');
+      const btnBlanco = document.getElementById('btn-tema-blanco');
+      const btnNegro = document.getElementById('btn-tema-negro');
+      const cajaRendimiento = document.getElementById('caja-rendimiento');
+      const btnMenuMovil = document.getElementById('btn-menu-movil');
+
+      if (esBlanco) {
+        document.body.style.backgroundColor = '#f4f4f5';
+        document.body.style.color = '#09090b';
+        document.getElementById('sidebar-panel').style.cssText = 'background-color: #ffffff; color: #09090b; border-right: 1px solid #d4d4d8;';
+        document.getElementById('logo-header-box').style.cssText = 'background-color: #09090b; color: #ffffff;';
+        document.getElementById('barra-superior').style.cssText = 'background-color: #ffffff; color: #09090b; border-bottom: 1px solid #d4d4d8;';
+        document.getElementById('banner-badge').style.cssText = 'background-color: #09090b; color: #ffffff;';
+        document.getElementById('footer-principal').style.cssText = 'background-color: #ffffff; color: #3f3f46; border-top: 1px solid #d4d4d8;';
+        cajaRendimiento.className = "p-3.5 rounded-2xl border border-zinc-200 bg-zinc-50 space-y-2.5";
+        btnMenuMovil.className = "md:hidden px-3 py-2 rounded-xl bg-zinc-100 text-zinc-950 border border-zinc-300 text-xs font-bold";
+        btnBlanco.className = "p-3 rounded-xl text-xs font-bold bg-zinc-950 text-white border border-zinc-950 shadow-sm text-center transition";
+        btnNegro.className = "p-3 rounded-xl text-xs font-semibold bg-zinc-100 text-zinc-700 border border-zinc-300 text-center transition";
+        textoTemaActivo.textContent = "Blanco";
+      } else {
+        document.body.style.backgroundColor = '#09090b';
+        document.body.style.color = '#fafafa';
+        document.getElementById('sidebar-panel').style.cssText = 'background-color: #000000; color: #fafafa; border-right: 1px solid #27272a;';
+        document.getElementById('logo-header-box').style.cssText = 'background-color: #ffffff; color: #09090b;';
+        document.getElementById('barra-superior').style.cssText = 'background-color: #000000; color: #fafafa; border-bottom: 1px solid #27272a;';
+        document.getElementById('banner-badge').style.cssText = 'background-color: #ffffff; color: #09090b;';
+        document.getElementById('footer-principal').style.cssText = 'background-color: #000000; color: #a1a1aa; border-top: 1px solid #27272a;';
+        cajaRendimiento.className = "p-3.5 rounded-2xl border border-zinc-800 bg-zinc-950 space-y-2.5";
+        btnMenuMovil.className = "md:hidden px-3 py-2 rounded-xl bg-zinc-900 text-white border border-zinc-700 text-xs font-bold";
+        btnNegro.className = "p-3 rounded-xl text-xs font-bold bg-white text-zinc-950 border border-white shadow-sm text-center transition";
+        btnBlanco.className = "p-3 rounded-xl text-xs font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 text-center transition";
+        textoTemaActivo.textContent = "Negro";
+      }
+
+      document.querySelectorAll('.boton-portal').forEach(el => {
+        el.style.cssText = esBlanco
+          ? "background-color: #ffffff; border-color: #d4d4d8;"
+          : "background-color: #111114; border-color: #27272a;";
+      });
+
+      document.querySelectorAll('.icono-portal').forEach(el => {
+        el.className = esBlanco
+          ? "icon-box icono-portal w-14 h-14 rounded-2xl bg-zinc-100 border border-zinc-200 flex items-center justify-center overflow-hidden p-1.5 shrink-0"
+          : "icon-box icono-portal w-14 h-14 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-center overflow-hidden p-1.5 shrink-0";
+      });
+
+      document.querySelectorAll('.titulo-portal').forEach(el => {
+        el.className = esBlanco
+          ? "titulo-portal block text-base sm:text-lg font-extrabold text-zinc-950 tracking-tight truncate"
+          : "titulo-portal block text-base sm:text-lg font-extrabold text-zinc-50 tracking-tight truncate";
+      });
+
+      document.querySelectorAll('.sub-portal').forEach(el => {
+        el.className = esBlanco
+          ? "sub-portal block text-xs text-zinc-600 leading-snug mt-0.5"
+          : "sub-portal block text-xs text-zinc-400 leading-snug mt-0.5";
+      });
+
+      document.querySelectorAll('.flecha-portal').forEach(el => {
+        el.className = esBlanco
+          ? "flecha-portal text-lg font-extrabold text-zinc-950 shrink-0"
+          : "flecha-portal text-lg font-extrabold text-white shrink-0";
+      });
+
+      const modoActual = localStorage.getItem('novaplay_modo_rendimiento') || (window.innerWidth < 768 ? 'movil' : 'pc');
+      cambiarModoRendimiento(modoActual);
+      if (cerrarMenu) cerrarSidebarMobile();
+    }
+
+    (function inicializar() {
+      const temaGuardado = localStorage.getItem('novaplay_tema_bn') || 'negro';
+      cambiarTema(temaGuardado, false);
+
+      const modoGuardado = localStorage.getItem('novaplay_modo_rendimiento');
+      if (modoGuardado) {
+        cambiarModoRendimiento(modoGuardado);
+      } else {
+        cambiarModoRendimiento(window.innerWidth < 768 ? 'movil' : 'pc');
+      }
+    })();
+  </script>
+</body>
+</html>
